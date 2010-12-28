@@ -19,7 +19,7 @@ Installation
 	2. Extract the module (If you haven't already done so) to a temporary folder on your computer.
 	3. Upload the folder `livestats` to `site-root/sites/all/modules/livestats`. You may need to create the modules folder if it doesn't already exist.
 	4. Go to the administration pages of your Drupal installation and go to `Administer -> Site Building -> Modules`. From this page you can enable the module under the `Other` modules section at the bottom of the page.
-	5. Go to the modules's configuration page (`Administer -> Site Configuration -> LiveStats`) and enter your account code, which can be found in the tracking code tab of the Site Manager at http://www.gosquared.com/sitemanager/ 
+	5. Go to the modules's configuration page (`Administer -> Site Configuration -> LiveStats`) and enter your account code, which can be found in the tracking code tab of the LiveStats Settings screen at https://www.gosquared.com/settings/ 
 
 Configuration
 =============
@@ -37,7 +37,7 @@ This option allows you to select if you want user identifiers passed to LiveStat
 FAQ
 ===
 = Do I need a GoSquared account for this module to work? =
-You'll need to sign up for LiveStats at https://www.gosquared.com/plans/ to make use of this module. If you're already using LiveStats, you'll simply need your Account Code (which can be found in the Tracking Code tab of the Site Manager) to make use of this module.
+You'll need to sign up for LiveStats at https://www.gosquared.com/plans/ to make use of this module. If you're already using LiveStats, you'll simply need your Account Code (which can be found in the Tracking Code tab of the LiveStats Settings screen) to make use of this module.
 
 = I don't have an account code. How do I get LiveStats? =
 
