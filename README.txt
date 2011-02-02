@@ -25,9 +25,6 @@ Configuration
 =============
 Once you have enabled the module and entered your account code on the configuration page (`Administer -> Site Configuration -> LiveStats`) then there are a few more options to configure to get the module working exactly how you want it to. The options available are described below:
 
-= Track Admin Pages =
-This allows you to select if you want the administration pages tracked by LiveStats. If you set this to `No` then any users that access the administration pages (Anything in `www.your-site/drupal-install/admin/`) will not be shown in LiveStats or recorded by Trends. This can be useful if you only want information collected about the actual visitors to your site rather than the administrators.
-
 = Display Users As =
 This option allows you to select if you want user identifiers passed to LiveStats so that you can see who actual users are in LiveStats if they are logged in, as well as how you want them to be displayed. There are 3 options:
 	`Off` - This is self-explanatory, an identifier of logged in users is not passed to LiveStats and everyone is shown by their LiveStats ID

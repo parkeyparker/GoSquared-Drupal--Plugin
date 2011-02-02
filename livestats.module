@@ -15,7 +15,7 @@ function livestats_admin() {
     '#required' => TRUE,
   );
 
-  $form['livestats_trackadmin'] = array(
+/*  $form['livestats_trackadmin'] = array(
     '#type' => 'radios',
     '#title' => t('Track admin pages:'),
     '#default_value' => variable_get('livestats_trackadmin', 0),
@@ -23,6 +23,7 @@ function livestats_admin() {
     '#description' => t('This option allows you choose whether you want LiveStats to track your admin pages.'),
     '#required' => TRUE,
   );
+*/
 
   $form['livestats_trackusers'] = array(
     '#type' => 'radios',
@@ -64,17 +65,17 @@ function livestats_setJS() {
   //Get the settings
   $acct = variable_get('livestats_acctcode', 'GSN-000000-X');
   $trkUsers = variable_get('livestats_trackusers', 2);
-  $trkAdmin = variable_get('livestats_trackadmin', 0);
+  //$trkAdmin = variable_get('livestats_trackadmin', 0);
 
   //Check they have entered their tracking code
   if ($acct !='' && $acct != 'GSN-000000-X' && preg_match('/GSN-[0-9]{6,7}-[A-Z]{1}/', $acct)) {
 
     //Check if we are not tracking admin pages and if this is an admin page then return
-    if ($trkAdmin == 1) {
-      if (arg(0) == 'admin') {
-        return;
-      }
-    }
+    //if ($trkAdmin == 1) {
+    //  if (arg(0) == 'admin') {
+    //    return;
+    //  }
+    //}
 
     //If tracking names, get the relevant information
     if ($trkUsers != 0) {
