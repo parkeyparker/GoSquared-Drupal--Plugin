@@ -5,130 +5,141 @@
 
 // Create the admin page and form
 function livestats_admin() {
-	$form = array();
-	
-	$form['livestats_acctcode'] = array(
-		'#type' => 'textfield',
-		'#title' => t('Your site account code: '),
-		'#default_value' => variable_get('livestats_acctcode', 'GSN-000000-X'),
-		'#size' => 14,
-		'#maxlength' => 13,
-		'#description' => t('This is your site\'s account code from GoSquared\'s LiveStats service. If you do not have an account please go to <a href="http://www.gosquared.com/plans" target="_blank">http://www.gosquared.com/plans</a> to get one!'),
-		'#required' => TRUE,
-	);
-	
-	$form['livestats_trackadmin'] = array(
-		'#type' => 'radios',
-		'#title' => t('Track admin pages: '),
-		'#default_value' => variable_get('livestats_trackadmin', 0),
-		'#options' => array(t('Yes'), t('No')),
-		'#description' => t('This option allows you choose whether you want LiveStats to track your admin pages.'),
-		'#required' => TRUE,
-	);
-	
-	$form['livestats_trackusers'] = array(
-		'#type' => 'radios',
-		'#title' => t('Display users as: '),
-		'#default_value' => variable_get('livestats_trackusers', 2),
-		'#options' => array(t('Off'), t('User ID'), t('Username')),
-		'#description' => t('This sets whether or not the visitor ID\'s in LiveStats are replaced by the logged in user\'s details. Choose "Off" to use the deafult LiveStats ID, choose "User ID" to use the user\'s ID from Drupal and choose "Username" to use the user\'s username from Drupal.'),
-		'#required' => TRUE,
-	);
-	
-	return system_settings_form($form);
+  $form = array();
+
+  $form['livestats_acctcode'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Your site account code:'),
+    '#default_value' => variable_get('livestats_acctcode', 'GSN-000000-X'),
+    '#size' => 14,
+    '#maxlength' => 13,
+    '#description' => t('This is your site\'s account code from GoSquared\'s LiveStats service. If you do not have an account please go to <a href="http://www.gosquared.com/plans" target="_blank">http://www.gosquared.com/plans</a> to get one!'),
+    '#required' => TRUE,
+  );
+
+  $form['livestats_trackadmin'] = array(
+    '#type' => 'radios',
+    '#title' => t('Track admin pages:'),
+    '#default_value' => variable_get('livestats_trackadmin', 0),
+    '#options' => array(t('Yes'), t('No')),
+    '#description' => t('This option allows you choose whether you want LiveStats to track your admin pages.'),
+    '#required' => TRUE,
+  );
+
+  $form['livestats_trackusers'] = array(
+    '#type' => 'radios',
+    '#title' => t('Display users as:'),
+    '#default_value' => variable_get('livestats_trackusers', 2),
+    '#options' => array(t('Off'), t('User ID'), t('Username')),
+    '#description' => t('This sets whether or not the visitor ID\'s in LiveStats are replaced by the logged in user\'s details. Choose "Off" to use the deafult LiveStats ID, choose "User ID" to use the user\'s ID from Drupal and choose "Username" to use the user\'s username from Drupal.'),
+    '#required' => TRUE,
+  );
+
+  return system_settings_form($form);
 }
 
 // Validate the admin page form
 function livestats_admin_validate($form, &$form_state) {
-	$acctcode = $form_state['values']['livestats_acctcode'];
-	if (!preg_match('/GSN-[0-9]{6,7}-[A-Z]{1}/', $acctcode)) {
-		form_set_error('livestats_acctcode', t('The code you have entered is in an incorrect format. Please enter the code in this format: GSN-000000-X. If you do not have an account code then please go to <a href="http://www.gosquared.com/plans" target="_blank">http://www.gosquared.com/plans</a> to get one.'));
-	}
+  $acctcode = $form_state['values']['livestats_acctcode'];
+  if (!preg_match('/GSN-[0-9]{6,7}-[A-Z]{1}/', $acctcode)) {
+    form_set_error('livestats_acctcode', t('The code you have entered is in an incorrect format. Please enter the code in this format: GSN-000000-X. If you do not have an account code then please go to <a href="http://www.gosquared.com/plans" target="_blank">http://www.gosquared.com/plans</a> to get one.'));
+  }
 }
 
 // Add the settings page to the menu
 function livestats_menu() {
-	$items = array();
-	
-	$items['admin/settings/livestats'] = array(
-		'title' => 'LiveStats',
-		'description' => 'Use this page to configure your LiveStats module settings with your account code.',
-		'page callback' => 'drupal_get_form',
-		'page arguments' => array('livestats_admin'),
-		'access arguments' => array('access administration pages'),
-		'type' => MENU_NORMAL_ITEM,
-	);
-	
-	return $items;
+  $items = array();
+
+  $items['admin/settings/livestats'] = array(
+    'title' => 'LiveStats',
+    'description' => 'Use this page to configure your LiveStats module settings with your account code.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('livestats_admin'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
 }
 
-function livestats_footer($main = 0) {
-	//Get the settings
-	$acct = variable_get('livestats_acctcode', 'GSN-000000-X');
-	$trkUsers = variable_get('livestats_trackusers', 2);
-	$trkAdmin = variable_get('livestats_trackadmin', 0);
-	
-	//Check they have entered their tracking code
-	if ($acct !='' && $acct != 'GSN-000000-X' && preg_match('/GSN-[0-9]{6,7}-[A-Z]{1}/', $acct)) {
-	
-		//Check if we are not tracking admin pages and if this is an admin page then return
-		if ($trkAdmin == 1) {
-			if (arg(0) == 'admin') {
-				return;
-			}
-		}
+function livestats_setJS() {
+  //Get the settings
+  $acct = variable_get('livestats_acctcode', 'GSN-000000-X');
+  $trkUsers = variable_get('livestats_trackusers', 2);
+  $trkAdmin = variable_get('livestats_trackadmin', 0);
 
-		//If tracking names, get the relevant information
-		if ($trkUsers != 0) {
-			//Get current user
-			$currUser = $GLOBALS['user'];
-			//Check if current user is not a guest
-			if ($currUser->uid) {
-				$lsUser = '';
-				switch ($trkUsers) {
-					case 1:
-					$lsUser = $currUser->uid;
-					break;
+  //Check they have entered their tracking code
+  if ($acct !='' && $acct != 'GSN-000000-X' && preg_match('/GSN-[0-9]{6,7}-[A-Z]{1}/', $acct)) {
 
-					case 2:
-					$lsUser = $currUser->name;
-					break;
+    //Check if we are not tracking admin pages and if this is an admin page then return
+    if ($trkAdmin == 1) {
+      if (arg(0) == 'admin') {
+        return;
+      }
+    }
 
-					default:
-					$lsUser = FALSE;
-					break;
-				}
-			}
-		}
+    //If tracking names, get the relevant information
+    if ($trkUsers != 0) {
+      //Get current user
+      $currUser = $GLOBALS['user'];
+      //Check if current user is not a guest
+      if ($currUser->uid) {
+        $lsUser = '';
+        switch ($trkUsers) {
+          case 1:
+          $lsUser = $currUser->uid;
+          break;
 
-		//Now create the relevant JS
-		//Set the initial JS
-		$GSJavascript = '
+          case 2:
+          $lsUser = $currUser->name;
+          break;
 
-	<!--LiveStats Joomla! Plugin-->
-	<script type="text/javascript">
-				var GoSquared={};
-				GoSquared.acct = "' . $acct . '";
-				';
-				if($lsUser) {
-					$GSJavascript .= 'GoSquared.VisitorName = "' . $lsUser . '";
-					';
-				}
-				$GSJavascript .= '(function(w){
-				        function gs(){
-				            w._gstc_lt=+(new Date); var d=document;
-				            var g = d.createElement("script"); g.type = "text/javascript"; g.async = true; g.src = "//d1l6p2sc9645hc.cloudfront.net/tracker.js";
-				            var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(g, s);
-				        }
-				        w.addEventListener?w.addEventListener("load",gs,false):w.attachEvent("onload",gs);
-				    })(window);
-				</script>
-	<!--End LiveStats Joomla! Plugin-->
+          default:
+          $lsUser = FALSE;
+          break;
+        }
+      }
+    }
 
-	';
-		//And now add to the body tag using return
-		return $GSJavascript;
-	} else {
-		return;
-	}
+    //Now create the relevant JS
+    //Set the initial JS
+    $GSJavascript = '
+
+  <!--LiveStats Joomla! Plugin-->
+  <script type="text/javascript">
+        var GoSquared={};
+        GoSquared.acct = "' . $acct . '";
+        ';
+        if ($lsUser) {
+          $GSJavascript .= 'GoSquared.VisitorName = "' . $lsUser . '";
+          ';
+        }
+        $GSJavascript .= '(function(w){
+            function gs(){
+              w._gstc_lt=+(new Date); var d=document;
+              var g = d.createElement("script"); g.type = "text/javascript"; g.async = true; g.src = "//d1l6p2sc9645hc.cloudfront.net/tracker.js";
+              var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(g, s);
+            }
+            w.addEventListener?w.addEventListener("load",gs,false):w.attachEvent("onload",gs);
+          })(window);
+        </script>
+  <!--End LiveStats Joomla! Plugin-->
+
+  ';
+    //now return the complete JS to the calling function.
+    return $GSJavascript;
+  }
+  else {
+    return;
+  }
+}
+
+function livestats_page_alter(&$page) {
+  $returnedJS = livestats_setJS();
+  if ($returnedJS) {
+    $page['page_bottom']['livestats']= array(
+      '#type' => 'markup',
+      '#markup' => $returnedJS,
+    );
+  }
 }
