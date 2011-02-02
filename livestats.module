@@ -71,11 +71,11 @@ function livestats_setJS() {
   if ($acct !='' && $acct != 'GSN-000000-X' && preg_match('/GSN-[0-9]{6,7}-[A-Z]{1}/', $acct)) {
 
     //Check if we are not tracking admin pages and if this is an admin page then return
-    //if ($trkAdmin == 1) {
-    //  if (arg(0) == 'admin') {
-    //    return;
-    //  }
-    //}
+    /*if ($trkAdmin == 1) {
+      if (arg(0) == 'admin') {
+        return;
+      }
+    }*/
 
     //If tracking names, get the relevant information
     if ($trkUsers != 0) {
