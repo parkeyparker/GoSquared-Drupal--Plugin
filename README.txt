@@ -1,11 +1,11 @@
-// $Id: README.txt,v 0.2 parkeyparker Exp $
+// $Id: README.txt,v 0.2.1 parkeyparker Exp $
 
 Module: GoSquared LiveStats
 Author: Aaron Parker <http://drupal.org/user/881678>
 
 Summary
 =======
-The official GoSquared LiveStats for Drupal Module to integrate teh GoSquared Tracking Code into your Drupal site.
+The official GoSquared LiveStats for Drupal Module to integrate the GoSquared Tracking Code into your Drupal site.
 
 This plugin allows site owners to easily integrate their GoSquared Tracking Code into their Drupal site without having to change any source code or theme files.
 
