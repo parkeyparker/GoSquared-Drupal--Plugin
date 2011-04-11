@@ -69,6 +69,9 @@ function livestats_setJS() {
   //Check they have entered their tracking code
   if ($acct !='' && $acct != 'GSN-000000-X' && preg_match('/GSN-[0-9]{6,7}-[A-Z]{1}/', $acct)) {
 
+    //Account code is valid so add it to the settings
+    drupal_add_js(array('livestats' => array('acct' => $acct)), 'setting');
+
     //Check if we are not tracking admin pages and if this is an admin page then return
     if ($trkAdmin == 1) {
       if (arg(0) == 'admin') {
@@ -77,6 +80,7 @@ function livestats_setJS() {
     }
 
     //If tracking names, get the relevant information
+    $hasUserInfo = FALSE;
     if ($trkUsers != 0) {
       //Get current user
       $currUser = $GLOBALS['user'];
@@ -96,6 +100,7 @@ function livestats_setJS() {
           $lsUser = FALSE;
           break;
         }
+      $hasUserInfo = TRUE;
       }
     }
 
@@ -103,10 +108,13 @@ function livestats_setJS() {
     //Set the initial JS
     $GSJavascript = '
         var GoSquared={};
-        GoSquared.acct = "' . check_plain($acct) . '";
+        GoSquared.acct = Drupal.settings.livestats.acct;
         ';
-        if ($lsUser) {
-          $GSJavascript .= 'GoSquared.VisitorName = "' . check_plain($lsUser) . '";
+        if ($hasUserInfo) {
+          	//Now add that user string to the settings for the javascript to use
+            drupal_add_js(array('livestats' => array('user' => $lsUser)), 'setting');
+            //And add the relevant line to the javascript to be returned
+            $GSJavascript .= 'GoSquared.VisitorName = Drupal.settings.livestats.user;
           ';
         }
         $GSJavascript .= '(function(w){
