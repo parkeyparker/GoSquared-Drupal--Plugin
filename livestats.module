@@ -54,7 +54,7 @@ function livestats_menu() {
     'description' => 'Use this page to configure your LiveStats module settings with your account code.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('livestats_admin'),
-    'access arguments' => array('access administration pages'),
+    'access arguments' => array('administer modules'),
     'type' => MENU_NORMAL_ITEM,
   );
 
@@ -103,14 +103,11 @@ function livestats_setJS() {
     //Now create the relevant JS
     //Set the initial JS
     $GSJavascript = '
-
-  <!--LiveStats Joomla! Plugin-->
-  <script type="text/javascript">
         var GoSquared={};
-        GoSquared.acct = "' . $acct . '";
+        GoSquared.acct = "' . check_plain($acct) . '";
         ';
         if ($lsUser) {
-          $GSJavascript .= 'GoSquared.VisitorName = "' . $lsUser . '";
+          $GSJavascript .= 'GoSquared.VisitorName = "' . check_plain($lsUser) . '";
           ';
         }
         $GSJavascript .= '(function(w){
@@ -121,9 +118,6 @@ function livestats_setJS() {
             }
             w.addEventListener?w.addEventListener("load",gs,false):w.attachEvent("onload",gs);
           })(window);
-        </script>
-  <!--End LiveStats Joomla! Plugin-->
-
   ';
     //now return the complete JS to the calling function.
     return $GSJavascript;
@@ -133,12 +127,11 @@ function livestats_setJS() {
   }
 }
 
-function livestats_page_alter(&$page) {
+function livestats_init() {
   $returnedJS = livestats_setJS();
   if ($returnedJS) {
-    $page['page_bottom']['livestats']= array(
-      '#type' => 'markup',
-      '#markup' => $returnedJS,
+    drupal_add_js($returnedJS,
+      array('type' => 'inline', 'scope' => 'footer', 'weight' => 10)
     );
   }
 }
