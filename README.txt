@@ -1,4 +1,4 @@
-// $Id: README.txt,v 0.2.1 parkeyparker Exp $
+// $Id: README.txt,v 0.2.2 parkeyparker Exp $
 
 Module: GoSquared LiveStats
 Author: Aaron Parker <http://drupal.org/user/881678>

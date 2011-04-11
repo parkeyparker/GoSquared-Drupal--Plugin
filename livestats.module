@@ -53,14 +53,14 @@ function livestats_menu() {
     'description' => 'Use this page to configure your LiveStats module settings with your account code.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('livestats_admin'),
-    'access arguments' => array('access administration pages'),
+    'access arguments' => array('administer modules'),
     'type' => MENU_NORMAL_ITEM,
   );
 
   return $items;
 }
 
-function livestats_footer($main = 0) {
+function livestats_setJS() {
   //Get the settings
   $acct = variable_get('livestats_acctcode', 'GSN-000000-X');
   $trkUsers = variable_get('livestats_trackusers', 2);
@@ -102,14 +102,11 @@ function livestats_footer($main = 0) {
     //Now create the relevant JS
     //Set the initial JS
     $GSJavascript = '
-
-  <!--LiveStats Joomla! Plugin-->
-  <script type="text/javascript">
         var GoSquared={};
-        GoSquared.acct = "' . $acct . '";
+        GoSquared.acct = "' . check_plain($acct) . '";
         ';
         if ($lsUser) {
-          $GSJavascript .= 'GoSquared.VisitorName = "' . $lsUser . '";
+          $GSJavascript .= 'GoSquared.VisitorName = "' . check_plain($lsUser) . '";
           ';
         }
         $GSJavascript .= '(function(w){
@@ -119,15 +116,18 @@ function livestats_footer($main = 0) {
               var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(g, s);
             }
             w.addEventListener?w.addEventListener("load",gs,false):w.attachEvent("onload",gs);
-          })(window);
-        </script>
-  <!--End LiveStats Joomla! Plugin-->
-
-  ';
+          })(window);';
     //And now add to the body tag using return
     return $GSJavascript;
   }
   else {
     return;
   }
+}
+
+function livestats_init() {
+	$returnedJS = livestats_setJS();
+	if ($returnedJS) {
+		drupal_add_js($data = $returnedJS, $type = 'inline', $scope = 'footer');
+	}
 }
