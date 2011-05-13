@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the LiveStats module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function livestats_uninstall() {
+  variable_del('livestats_acctcode');
+  variable_del('livestats_trackadmin');
+  variable_del('livestats_trackusers');
+}
