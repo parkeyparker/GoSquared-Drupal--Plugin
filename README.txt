@@ -11,6 +11,10 @@ This enables you to monitor your Drupal site's traffic in real-time with LiveSta
 
 To use LiveStats and Trends on your Drupal site, simply download this plugin and sign up for a free account at https://www.gosquared.com/plans/
 
+Getting the correct version
+===========================
+Please get the correct version from the relevant git branch. If you are using Drupal 6.x then use branch 6.x and so on.
+
 Installation
 ============
 	1. Sign up to LiveStats for free at https://www.gosquared.com/plans/
