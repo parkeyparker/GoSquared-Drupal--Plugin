@@ -1,6 +1,4 @@
 <?php
-// $Id$
-
 // Create the admin page and form
 function livestats_admin() {
   $form = array();

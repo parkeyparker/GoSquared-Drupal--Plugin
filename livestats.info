@@ -1,4 +1,3 @@
-; $Id$
 name = GoSquared's LiveStats
 description = A module to add the tracking code to each page automatically for use with GoSquared's LiveStats service. If you do not already have an account please go to <a href="http://www.gosquared.com/plans" target="_blank">http://www.gosquared.com/plans</a> to get one!
 core = 7.x
